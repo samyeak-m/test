@@ -1,0 +1,45 @@
+<div class="cart-count">
+    <span class="minus"><img src="img/icon-minus.svg" alt="" ></span>
+    <span class="product-number">0</span>
+    <span class="plus"><img src="img/icon-plus.svg" alt="" ></span>
+</div>
+
+<div class="cart-count">
+    <span class="minus"><img src="img/icon-minus.svg" alt="" ></span>
+    <span class="product-number">0</span>
+    <span class="plus"><img src="img/icon-plus.svg" alt="" ></span>
+</div>
+
+
+<script>
+    class CartCounter {
+        constructor(container) {
+            this.container = container;
+            this.productNumber = container.querySelector(".product-number");
+            this.plus = container.querySelector(".plus");
+            this.minus = container.querySelector(".minus");
+
+            this.plus.addEventListener("click", () => {
+                this.increment();
+            });
+
+            this.minus.addEventListener("click", () => {
+                this.decrement();
+            });
+        }
+
+        increment() {
+            this.productNumber.innerText = parseInt(this.productNumber.innerText) + 1;
+        }
+
+        decrement() {
+            if (parseInt(this.productNumber.innerText) > 0) {
+                this.productNumber.innerText = parseInt(this.productNumber.innerText) - 1;
+            }
+        }
+    }
+
+    // Initialize cart counters
+    const cartCounters = document.querySelectorAll(".cart-count");
+    cartCounters.forEach(counter => new CartCounter(counter));
+</script>

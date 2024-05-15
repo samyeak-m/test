@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internet Speed Test</title>
+</head>
+<body>
+    <h1>Internet Speed Test</h1>
+    <div id="speed-results">
+        <p id="status">Checking connection...</p>
+        <p id="download-speed">Download Speed: <span id="download-speed-value">N/A</span> Mbps</p>
+    </div>
+
+    <script>
+        function fetchSpeedTestResults() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'speedtest_server.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            let responseText = '';
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.LOADING || xhr.readyState === XMLHttpRequest.DONE) {
+                    responseText += xhr.responseText;
+                    const jsonObjects = responseText.split('\n');
+                    for (let i = 0; i < jsonObjects.length; i++) {
+                        try {
+                            const data = JSON.parse(jsonObjects[i]);
+                            if (data.error) {
+                                console.error("Speed test error:", data.error);
+                                document.getElementById('status').textContent = 'Error during speed test: ' + data.error; 
+                                document.getElementById('download-speed-value').textContent = 'N/A';
+                            } else if (data.downloadSpeed !== undefined) {
+                                const downloadSpeed = data.downloadSpeed / 1000000;
+                                document.getElementById('download-speed-value').textContent = downloadSpeed.toFixed(2);
+                            }
+                        } catch (e) { /* Skip invalid JSON */ }
+                    }
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (document.getElementById('status').textContent !== 'Error during speed test: Failed to download the test file.')
+                            document.getElementById('status').textContent = 'Speed test complete';
+                    }
+                }
+            };
+
+            xhr.send();
+        }
+
+        window.onload = fetchSpeedTestResults;
+    </script>
+</body>
+</html>

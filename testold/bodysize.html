@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Body Size</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    #dimensions {
+      position: fixed;
+      top: 45%;
+      left: 30%;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 10px;
+      font-size: 32px;
+      font-family: Arial, sans-serif;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <div id="dimensions"></div>
+  <script>
+    // Get the document element (html)
+    var html = document.documentElement;
+
+    // Create a div to display dimensions
+    var dimensionsDiv = document.createElement("div");
+    dimensionsDiv.id = "dimensions";
+
+    // Append the dimensions div to the body
+    document.body.appendChild(dimensionsDiv);
+
+    // Function to update dimensions
+    function updateDimensions() {
+      var width = html.offsetWidth;
+      var height = html.offsetHeight;
+      dimensionsDiv.textContent = "Width: " + width + "px, Height: " + height + "px";
+    }
+
+    // Initial update
+    updateDimensions();
+
+    // Listen for resize events to update dimensions
+    window.addEventListener("resize", updateDimensions);
+  </script>
+</body>
+</html>
